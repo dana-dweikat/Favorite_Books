@@ -1,0 +1,56 @@
+{% extends './base.html' %}
+{% block content %}
+<div class="container text-left mt-6">
+    
+        <div class="row mt-5">
+            <div class=" col-lg-6">
+                <div>
+    
+                    
+                    <form action="{% url 'app1:update' pk=book.id  %}" method="POST">
+                        {% csrf_token %}
+                            <input required type="text" name="title" class="rounded border-3 w-75 " id="title" value="{{ book.title }}">                    <br>
+                            <p>Added by: {{book.uploaded_by.first_name}}</p>
+                            <p>Added on: {{book.created_at}}</p>
+                            <p>Last updated on: {{book.updated_at}}</p>
+                            <div class="form-group d-flex  ">
+                            <label for="exampleFormControlTextarea1" class="me-2">Description :   </label>
+                            <textarea class=""  name="description" id="exampleFormControlTextarea1" rows="5" cols="35">{{ book.description }}</textarea>
+                        </div>
+                          <div class="btn_div d-flex justify-content-center">
+                            <button style="width: fit-content;
+                            box-shadow: 2px 3px 0px 1px rgba(0, 0, 0, 1)
+                            , 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+                            border: 2px solid black;" type="submit" class="btn btn-outline-dark btn-shadow mt-3"> Update</button>
+                                <button style="width: fit-content;
+                                box-shadow: 2px 3px 0px 1px rgba(0, 0, 0, 1)
+                                , 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+                                border: 2px solid black;" class="btn btn-outline-dark btn-shadow mt-3  text-light bg-danger"> <a   class="dec text-decoration-none text-white"   href="{% url 'app1:delete' pk=book.id  %}">Delete</a></button>
+                 
+                          </div>
+                            </form>
+                    
+                </div>
+            </div>
+            <div class=" col-lg-6">
+<div class= "pairent">
+    <h1 class="h3">Users Who Like This Book:</h1>
+    {% for user in book.users_set.all %}
+
+    <p> . {{user.first_name}}
+        
+    </p>
+    {% endfor %}
+
+    {% if book in user.favorite_books.all %}
+        <a  class="un_favorite" style="text-decoration: underline;" href="{% url 'app1:remove_from_favorite' pk=book.pk %}">Un Favorites</a>
+    {% else %}
+        <a style="text-decoration: underline;" href="{% url 'app1:add_to_favorite' pk=book.pk %}">Add to Favorites</a>
+    {% endif %}
+</div>
+            </div>
+      
+        </div>
+
+</div>
+{% endblock content %}

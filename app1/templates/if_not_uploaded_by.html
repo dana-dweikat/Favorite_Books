@@ -1,0 +1,38 @@
+{% extends './base.html' %}
+{% block content %}
+<div class="container text-left mt-6">
+    
+        <div class="row mt-5">
+            <div class=" col-lg-6">
+                <h1 class="book_title  h3 w-75 border-0 ">{{ book.title}} </h1>
+                <div>
+    
+                    <p>Added by: {{book.uploaded_by.first_name}}</p>
+                    <p>Added on: {{book.created_at}}</p>
+                    <p>Last updated on: {{book.updated_at}}</p>
+                    <p>Description: {{book.description}} </p>
+                    
+                </div>
+            </div>
+            <div class=" col-lg-6">
+<div class= "pairent">
+    <h1 class="h3">Users Who Like This Book:</h1>
+    {% for user in book.users_set.all %}
+
+    <p> . {{user.first_name}}
+        
+    </p>
+    {% endfor %}
+
+    {% if book in user.favorite_books.all %}
+        <a  class="un_favorite" style="text-decoration: underline;" href="{% url 'app1:remove_from_favorite' pk=book.pk %}">Un Favorites</a>
+    {% else %}
+        <a style="text-decoration: underline;" href="{% url 'app1:add_to_favorite' pk=book.pk %}">Add to Favorites</a>
+    {% endif %}
+</div>
+            </div>
+      
+        </div>
+
+</div>
+{% endblock content %}
